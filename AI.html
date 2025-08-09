@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divyaang - AI Sign Language & Obstacle Detection Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-hands"></i>
+                    <span>Divyaang</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>AI-Powered Sign Language & Obstacle Detection</h1>
+                <p>Break communication barriers with our advanced AI platform that converts sign language to audio and text with emotion detection, plus obstacle detection for enhanced accessibility.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Get Started</button>
+                    <button class="btn btn-secondary">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <i class="fas fa-sign-language"></i>
+                    <span>Real-time Detection</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Our Features</h2>
+                <div class="features-grid">
+                    <!-- Sign to Audio -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h3>Sign to Audio</h3>
+                        <p>Convert sign language gestures into clear, natural-sounding speech in real-time using advanced AI technology.</p>
+                        <div class="feature-demo">
+                            <video class="demo-video" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23333'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23666' font-family='Arial' font-size='14'%3ESign Detection Demo%3C/text%3E%3C/svg%3E">
+                                <source src="#" type="video/mp4">
+                            </video>
+                            <a class="demo-btn" href="https://sign-language-detection-system.onrender.com" target="_blank" rel="noopener">
+                                <i class="fas fa-play"></i>
+                                Start Detection
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sign to Text with Emotion -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <h3>Text with Emotion</h3>
+                        <p>Transform sign language into text while detecting emotional context and sentiment for more meaningful communication.</p>
+                        <div class="feature-demo">
+                            <div class="text-output">
+                                <div class="text-display">
+                                    <span class="detected-text">Hello, how are you?</span>
+                                    <span class="emotion-tag happy">😊 Happy</span>
+                                </div>
+                                <div class="emotion-meter">
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 85%;"></div>
+                                    </div>
+                                    <span>Confidence: 85%</span>
+                                </div>
+                            </div>
+                            <a class="demo-btn" href="https://emotion-readrr.onrender.com" target="_blank" rel="noopener">
+                                <i class="fas fa-text-width"></i>
+                                Start Conversion
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Obstacle Detection -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-location-crosshairs"></i>
+                        </div>
+                        <h3>Obstacle Detection</h3>
+                        <p>Detect nearby obstacles and hazards to ensure safe navigation for visually impaired users with audio alerts.</p>
+                        <div class="feature-demo">
+                            <div class="radar-display">
+                                <div class="radar-circle">
+                                    <div class="radar-sweep"></div>
+                                    <div class="obstacle obstacle-1"></div>
+                                    <div class="obstacle obstacle-2"></div>
+                                    <div class="user-position"></div>
+                                </div>
+                                <div class="distance-info">
+                                </div>
+                            </div>
+                            <a class="demo-btn" href="https://detection-system.onrender.com" target="_blank" rel="noopener">
+                                <i class="fas fa-search"></i>
+                                Scan Area
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Slideshow Section -->
+        <section class="features-slideshow">
+            <div class="container">
+                <h2 class="section-title">Explore Our Features</h2>
+                <div class="slideshow-container">
+                    <div class="slides-wrapper">
+                        <!-- Slide 1: Sign to Audio -->
+                        <div class="slide active">
+                            <div class="slide-content">
+                                <div class="slide-visual">
+                                    <div class="feature-showcase">
+                                        <div class="showcase-icon">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                        <div class="showcase-animation">
+                                            <div class="hand-gesture">
+                                                <i class="fas fa-hand-paper"></i>
+                                            </div>
+                                            <div class="conversion-arrow">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </div>
+                                            <div class="audio-waves">
+                                                <span class="wave"></span>
+                                                <span class="wave"></span>
+                                                <span class="wave"></span>
+                                                <span class="wave"></span>
+                                            </div>
+                                        </div>
+                                        <div class="showcase-text">Real-time Audio Output</div>
+                                    </div>
+                                </div>
+                                <div class="slide-info">
+                                    <h3>Sign Language to Audio</h3>
+                                    <p>Our advanced AI technology converts sign language gestures into clear, natural-sounding speech in real-time. Perfect for bridging communication gaps between hearing and deaf communities.</p>
+                                    <ul class="feature-benefits">
+                                        <li><i class="fas fa-check"></i> 99.2% accuracy rate</li>
+                                        <li><i class="fas fa-check"></i> Real-time processing</li>
+                                        <li><i class="fas fa-check"></i> Natural voice synthesis</li>
+                                        <li><i class="fas fa-check"></i> Multiple languages supported</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2: Text with Emotion -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <div class="slide-visual">
+                                    <div class="feature-showcase">
+                                        <div class="showcase-icon">
+                                            <i class="fas fa-comment-alt"></i>
+                                        </div>
+                                        <div class="showcase-animation">
+                                            <div class="hand-gesture">
+                                                <i class="fas fa-hand-peace"></i>
+                                            </div>
+                                            <div class="conversion-arrow">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </div>
+                                            <div class="text-emotion-display">
+                                                <div class="text-bubble">
+                                                    <span class="typing-text">Hello friend!</span>
+                                                </div>
+                                                <div class="emotion-indicator">
+                                                    <span class="emotion-icon">😊</span>
+                                                    <span class="emotion-label">Happy</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="showcase-text">Text + Emotion Detection</div>
+                                    </div>
+                                </div>
+                                <div class="slide-info">
+                                    <h3>Text with Emotion Recognition</h3>
+                                    <p>Transform sign language into text while detecting emotional context and sentiment. Our AI analyzes facial expressions and gesture intensity to provide complete communication understanding.</p>
+                                    <ul class="feature-benefits">
+                                        <li><i class="fas fa-check"></i> Emotion context analysis</li>
+                                        <li><i class="fas fa-check"></i> Sentiment detection</li>
+                                        <li><i class="fas fa-check"></i> Facial expression recognition</li>
+                                        <li><i class="fas fa-check"></i> Real-time text output</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Obstacle Detection -->
+                        <div class="slide">
+                            <div class="slide-content">
+                                <div class="slide-visual">
+                                    <div class="feature-showcase">
+                                        <div class="showcase-icon">
+                                            <i class="fas fa-radar-alt"></i>
+                                        </div>
+                                        <div class="showcase-animation">
+                                            <div class="radar-scanner">
+                                                <div class="radar-circle">
+                                                    <div class="radar-sweep"></div>
+                                                    <div class="detected-obstacle"></div>
+                                                    <div class="user-dot"></div>
+                                                </div>
+                                            </div>
+                                            <div class="conversion-arrow">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </div>
+                                            <div class="alert-system">
+                                                <div class="alert-icon">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </div>
+                                                <div class="alert-text">Obstacle detected 2.5m ahead</div>
+                                            </div>
+                                        </div>
+                                        <div class="showcase-text">Smart Navigation Assistance</div>
+                                    </div>
+                                </div>
+                                <div class="slide-info">
+                                    <h3>Obstacle Detection & Navigation</h3>
+                                    <p>Advanced computer vision technology detects nearby obstacles and hazards, providing audio alerts and guidance for safe navigation. Essential for visually impaired users.</p>
+                                    <ul class="feature-benefits">
+                                        <li><i class="fas fa-check"></i> 360° environment scanning</li>
+                                        <li><i class="fas fa-check"></i> Distance measurement</li>
+                                        <li><i class="fas fa-check"></i> Audio alerts & guidance</li>
+                                        <li><i class="fas fa-check"></i> Real-time hazard detection</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slideshow Navigation -->
+                    <div class="slideshow-nav">
+                        <button class="nav-btn prev-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="slide-indicators">
+                            <span class="indicator active" data-slide="0"></span>
+                            <span class="indicator" data-slide="1"></span>
+                            <span class="indicator" data-slide="2"></span>
+                        </div>
+                        <button class="nav-btn next-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Auto-play controls -->
+                    <div class="slideshow-controls">
+                        <button class="control-btn play-pause-btn">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">99.2%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">35+</div>
+                        <div class="stat-label">Sign Languages</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">Real-time</div>
+                        <div class="stat-label">Processing</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Users Helped</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-hands"></i>
+                        <span>Divyaang</span>
+                    </div>
+                    <p>Breaking barriers, building bridges through AI-powered communication technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#">Sign to Audio</a></li>
+                        <li><a href="#">Text Conversion</a></li>
+                        <li><a href="#">Emotion Detection</a></li>
+                        <li><a href="#">Obstacle Detection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> support@divyaang.ai</p>
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt"></i> San Francisco, CA</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Divyaang. All rights reserved. Built for Smart India Hackathon 2024.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
