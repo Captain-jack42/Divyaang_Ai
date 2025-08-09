@@ -1,0 +1,74 @@
+<div class="settings-container">
+  <h3 style="margin-bottom: 20px; color: #fb923c;">⚙️ Settings</h3>
+  <p style="color:#cbd5e1; margin-bottom:1rem">Tune camera, audio, and interface preferences. Changes apply instantly and stay local to this session.</p>
+  <div class="settings-grid">
+    <div class="settings-card">
+      <h4>🎥 Camera Settings</h4>
+      <div class="setting-item">
+        <label>Camera Quality:</label>
+        <select id="cameraQuality">
+          <option value="low">Low (480p)</option>
+          <option value="medium" selected>Medium (720p)</option>
+          <option value="high">High (1080p)</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label>Detection Sensitivity:</label>
+        <input type="range" id="detectionSensitivity" min="0.1" max="0.9" step="0.1" value="0.3">
+        <span id="sensitivityValue">0.3</span>
+      </div>
+      <div class="setting-item">
+        <label>Frame Rate:</label>
+        <select id="cameraFps">
+          <option value="30" selected>30 FPS</option>
+          <option value="60">60 FPS</option>
+        </select>
+      </div>
+      <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="mirrorCamera">
+        <label for="mirrorCamera" style="margin:0">Mirror Camera</label>
+      </div>
+    </div>
+    <div class="settings-card">
+      <h4>🔊 Audio Settings</h4>
+      <div class="setting-item">
+        <label>Voice Feedback:</label>
+        <input type="checkbox" id="voiceEnabled" checked>
+      </div>
+      <div class="setting-item">
+        <label>Speech Rate:</label>
+        <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.9">
+        <span id="speechRateValue">0.9</span>
+      </div>
+      <div class="setting-item">
+        <label>Volume:</label>
+        <input type="range" id="speechVolume" min="0" max="1" step="0.1" value="1">
+        <span id="speechVolumeValue">1.0</span>
+      </div>
+    </div>
+    <div class="settings-card">
+      <h4>🎨 Interface</h4>
+      <div class="setting-item">
+        <label>Theme:</label>
+        <select id="themeSelect">
+          <option value="dark" selected>Dark</option>
+          <option value="light">Light</option>
+          <option value="auto">Auto</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label>Auto-update Analytics:</label>
+        <input type="checkbox" id="autoSaveHistory" checked>
+      </div>
+      <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="highContrastMode">
+        <label for="highContrastMode" style="margin:0">High Contrast Mode</label>
+      </div>
+      <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="reduceMotion">
+        <label for="reduceMotion" style="margin:0">Reduce Motion</label>
+      </div>
+    </div>
+  </div>
+</div>
+

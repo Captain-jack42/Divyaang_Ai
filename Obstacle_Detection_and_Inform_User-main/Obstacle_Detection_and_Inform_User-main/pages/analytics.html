@@ -1,0 +1,62 @@
+<div class="analytics-container">
+  <h3 style="margin-bottom: 20px; color: #fb923c;">📈 Analytics Dashboard</h3>
+  <div class="analytics-grid">
+    <div class="analytics-card">
+      <h4>🧭 Overview</h4>
+      <div class="stat-item">
+        <span>Status:</span>
+        <span id="statusLabel">Idle</span>
+      </div>
+      <div class="stat-item">
+        <span>Model:</span>
+        <span id="modelNameLabel">Not loaded</span>
+      </div>
+      <div class="stat-item">
+        <span>Live FPS:</span>
+        <span id="liveFps">0</span>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <h4>📊 Detection Stats</h4>
+      <div class="stat-item">
+        <span>Total Sessions:</span>
+        <span id="totalSessions">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Total Objects:</span>
+        <span id="totalObjects">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Avg Confidence:</span>
+        <span id="avgConfidenceOverall">0%</span>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <h4>🎯 Most Detected</h4>
+      <div id="mostDetectedList">
+        <div style="color: #b0c4de; text-align: center;">No data</div>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <h4>⏱️ Session Time</h4>
+      <div class="stat-item">
+        <span>Today:</span>
+        <span id="todayTime">0 min</span>
+      </div>
+      <div class="stat-item">
+        <span>This Week:</span>
+        <span id="weekTime">0 min</span>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <h4>ℹ️ How Analytics Works</h4>
+      <ul style="padding-left:1.25rem; color:#cbd5e1;">
+        <li>Overview shows current status, model, and frames per second.</li>
+        <li>Detection Stats update live while AI is running.</li>
+        <li>Most Detected ranks objects seen most often this session.</li>
+        <li>Session Time summarizes your recent usage on this device.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+

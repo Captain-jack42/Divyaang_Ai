@@ -1,0 +1,71 @@
+<div class="main-content">
+  <div class="video-section">
+    <div class="video-container">
+      <video id="video" autoplay playsinline muted></video>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" class="btn btn-primary">🚀 Start AI</button>
+      <button id="stopBtn" class="btn btn-danger" disabled>⏹️ Stop</button>
+      <button id="listenBtn" class="btn btn-warning" disabled>🎤 Listen</button>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <div class="status-panel">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">
+        <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.12)">
+          <div style="font-size:1.6rem;font-weight:700;color:#ffb347" id="totalDetections">0</div>
+          <div style="font-size:0.8rem;color:#b0c4de">Objects</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.12)">
+          <div style="font-size:1.6rem;font-weight:700;color:#fb923c" id="avgConfidence">0%</div>
+          <div style="font-size:0.8rem;color:#b0c4de">Accuracy</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+        <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Live Analysis</div>
+        <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+      </div>
+      <div class="status-item">
+        <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">System Status</div>
+        <div id="systemStatus">Initializing...</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+        <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Detections</div>
+        <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+      </div>
+      <div class="status-item">
+        <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">Objects Detected</div>
+        <div class="detection-list" id="detectionList">
+          <div style="color: #b0c4de; text-align: center;">No objects detected</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+        <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Proximity</div>
+        <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+      </div>
+      <div class="status-item">
+        <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">Nearest Object</div>
+        <div id="nearestStatus">Calculating...</div>
+      </div>
+
+      <div class="qa-section">
+        <h3 style="margin-bottom: 20px; color: #fb923c;">🤖 AI Question & Answer</h3>
+        <div class="question-box" id="questionBox" style="display: none;">
+          <div style="margin-bottom: 10px;">
+            <span class="listening-indicator" id="listeningIndicator"></span>
+            <strong>Question:</strong>
+          </div>
+          <div id="questionText" style="color: #fff;"></div>
+        </div>
+        <div class="answer-box" id="answerBox" style="display: none;">
+          <div style="margin-bottom: 10px;"><strong style="color:#fb923c">AI Answer:</strong></div>
+          <div id="answerText" style="color: #fef3c7;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

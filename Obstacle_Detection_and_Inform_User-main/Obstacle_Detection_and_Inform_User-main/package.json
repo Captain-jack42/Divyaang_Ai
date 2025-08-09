@@ -1,0 +1,23 @@
+{
+  "name": "advanced-smart-navigation-ai",
+  "version": "1.0.0",
+  "description": "Advanced Smart Navigation AI with Multi-Model Object Detection and Intelligent Q&A",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -s . -p 3000",
+    "dev": "npx serve -s . -p 3000",
+    "local": "npx serve -s . -p 3000"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "keywords": [
+    "ai",
+    "navigation",
+    "object-detection",
+    "speech-recognition",
+    "tensorflow"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+} 

@@ -1,0 +1,11 @@
+# No changes required; keeping as-is. This file is retained for deployment configuration.
+services:
+  - type: web
+    name: advanced-smart-navigation-ai
+    env: static
+    buildCommand: npm install
+    startCommand: npx serve -s . -p $PORT
+    staticPublishPath: .
+    envVars:
+      - key: NODE_ENV
+        value: production 

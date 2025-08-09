@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Smart Navigation AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Black + Gradient Gray Theme */
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #1a1a1a 50%, #2a2a2a 75%, #3a3a3a 100%);
+            color: #f5f5f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Light Theme Variant (uncomment to use) */
+        /*
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
+            color: #1e293b;
+        }
+        */
+
+        /* Alternative Light Theme - Professional Blue */
+        /*
+        body {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 30%, #cbd5e1 60%, #94a3b8 100%);
+            color: #1e293b;
+        }
+        */
+
+        /* Alternative Dark Theme - Innovation Purple */
+        /*
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #4338ca 70%, #6366f1 100%);
+            color: #f8fafc;
+        }
+        */
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            /* Gray Text Gradient */
+            background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 25%, #d1d5db 50%, #9ca3af 75%, #6b7280 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            color: #d1d5db;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+            min-width: 140px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            color: white;
+            border-color: #4b5563;
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.35);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .video-section {
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            grid-column: 1;
+        }
+
+        .video-container {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background: #111111;
+        }
+
+        .video-container.mirrored {
+            transform: scaleX(-1);
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 80vh;
+            object-fit: cover;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: 2px solid transparent;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .status-panel {
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #10b981;
+        }
+
+        .status-item h4 {
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .detection-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .detection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .detection-item:last-child {
+            border-bottom: none;
+        }
+
+        .confidence-bar {
+            width: 60px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            grid-column: 2;
+        }
+
+        .qa-section {
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid #f59e0b;
+        }
+
+        .answer-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 2px solid #10b981;
+        }
+
+        .listening-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+
+
+        .help-card li {
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .help-card strong {
+            color: #818cf8;
+        }
+
+        .analytics-container, .settings-container, .help-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .analytics-grid, .settings-grid, .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .analytics-card, .settings-card, .help-card {
+            background: rgba(20, 20, 20, 0.85);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .analytics-card h4, .settings-card h4, .help-card h4 {
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .setting-item select, .setting-item input[type="range"] {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            background: #161616;
+            color: #f5f5f5;
+            font-size: 0.95rem;
+        }
+
+        .setting-item select:focus, .setting-item input[type="range"]:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .setting-item input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .setting-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #6b7280;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .setting-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #6b7280;
+            margin-right: 0.5rem;
+        }
+        /* Accessibility toggles */
+        body.high-contrast .analytics-card,
+        body.high-contrast .settings-card,
+        body.high-contrast .help-card,
+        body.high-contrast .video-section,
+        body.high-contrast .qa-section,
+        body.high-contrast .controls,
+        body.high-contrast .status-panel {
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        body.reduce-motion *,
+        body.reduce-motion .listening-indicator {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .help-card ol, .help-card ul {
+            padding-left: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .video-section, .status-panel, .qa-section {
+                grid-column: 1;
+            }
+
+            .analytics-grid, .settings-grid, .help-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .tab-navigation {
+                padding: 0.5rem;
+                gap: 0.25rem;
+            }
+
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                min-width: 120px;
+            }
+
+            .video-section {
+                padding: 1.5rem;
+            }
+
+            video {
+                max-height: 50vh;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+
+
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .tab-btn {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+
+            .video-section, .status-panel, .qa-section {
+                padding: 1rem;
+            }
+
+            video {
+                max-height: 40vh;
+            }
+
+            .btn {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Advanced Smart Navigation AI</h1>
+            <p>Multi-Model Object Detection & Intelligent Q&A System</p>
+            
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="main">🎥 Main View</button>
+                <button class="tab-btn" data-tab="analytics">📈 Analytics</button>
+                <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+                <button class="tab-btn" data-tab="help">❓ Help</button>
+            </div>
+        </div>
+        
+        <!-- Tab Contents -->
+        <div class="tab-content active" id="main-tab">
+            <div class="main-content">
+              <div class="video-section">
+                <div class="video-container">
+                  <video id="video" autoplay playsinline muted></video>
+                  <canvas id="canvas"></canvas>
+                </div>
+
+                <div class="controls">
+                  <button id="startBtn" class="btn btn-primary">🚀 Start AI</button>
+                  <button id="stopBtn" class="btn btn-danger" disabled>⏹️ Stop</button>
+                  <button id="listenBtn" class="btn btn-warning" disabled>🎤 Listen</button>
+                </div>
+              </div>
+
+              <div class="right-column">
+                <div class="status-panel">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">
+                    <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.12)">
+                      <div style="font-size:1.6rem;font-weight:700;color:#ffb347" id="totalDetections">0</div>
+                      <div style="font-size:0.8rem;color:#b0c4de">Objects</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.12)">
+                      <div style="font-size:1.6rem;font-weight:700;color:#fb923c" id="avgConfidence">0%</div>
+                      <div style="font-size:0.8rem;color:#b0c4de">Accuracy</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+                    <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Live Analysis</div>
+                    <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+                  </div>
+                  <div class="status-item">
+                    <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">System Status</div>
+                    <div id="systemStatus">Initializing...</div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+                    <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Detections</div>
+                    <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+                  </div>
+                  <div class="status-item">
+                    <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">Objects Detected</div>
+                    <div class="detection-list" id="detectionList">
+                      <div style="color: #b0c4de; text-align: center;">No objects detected</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px 0">
+                    <div style="font-weight:700;color:#fb923c;letter-spacing:0.5px;text-transform:uppercase">Proximity</div>
+                    <div style="height:1px;background:linear-gradient(90deg, rgba(251,146,60,0.25), rgba(255,255,255,0.08));flex:1;margin-left:12px"></div>
+                  </div>
+                  <div class="status-item">
+                    <div style="font-weight: 600; color: #fb923c; margin-bottom: 5px;">Nearest Object</div>
+                    <div id="nearestStatus">Calculating...</div>
+                  </div>
+
+                  <div class="qa-section">
+                    <h3 style="margin-bottom: 20px; color: #fb923c;">🤖 AI Question & Answer</h3>
+                    <div class="question-box" id="questionBox" style="display: none;">
+                      <div style="margin-bottom: 10px;">
+                        <span class="listening-indicator" id="listeningIndicator"></span>
+                        <strong>Question:</strong>
+                      </div>
+                      <div id="questionText" style="color: #fff;"></div>
+                    </div>
+                    <div class="answer-box" id="answerBox" style="display: none;">
+                      <div style="margin-bottom: 10px;"><strong style="color:#fb923c">AI Answer:</strong></div>
+                      <div id="answerText" style="color: #fef3c7;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics-tab">
+            <div class="analytics-container">
+                <h3 style="margin-bottom: 20px; color: #fb923c;">📈 Analytics Dashboard</h3>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h4>🧭 Overview</h4>
+                        <div class="stat-item"><span>Status:</span><span id="statusLabel">Idle</span></div>
+                        <div class="stat-item"><span>Model:</span><span id="modelNameLabel">Not loaded</span></div>
+                        <div class="stat-item"><span>Live FPS:</span><span id="liveFps">0</span></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>📊 Detection Stats</h4>
+                        <div class="stat-item">
+                            <span>Total Sessions:</span>
+                            <span id="totalSessions">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Total Objects:</span>
+                            <span id="totalObjects">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Avg Confidence:</span>
+                            <span id="avgConfidenceOverall">0%</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>🎯 Most Detected</h4>
+                        <div id="mostDetectedList"><div style="color:#b0c4de;text-align:center;">No data</div></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>⏱️ Session Time</h4>
+                        <div class="stat-item">
+                            <span>Today:</span>
+                            <span id="todayTime">0 min</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>This Week:</span>
+                            <span id="weekTime">0 min</span>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>ℹ️ How Analytics Works</h4>
+                        <ul style="padding-left:1.25rem;color:#cbd5e1;">
+                            <li>Overview shows current status, model, and frames per second.</li>
+                            <li>Detection Stats update live while AI is running.</li>
+                            <li>Most Detected ranks objects seen most often this session.</li>
+                            <li>Session Time summarizes your recent usage on this device.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings-tab">
+            <div class="settings-container">
+                <h3 style="margin-bottom: 20px; color: #fb923c;">⚙️ Settings</h3>
+                <p style="color:#cbd5e1; margin-bottom:1rem">Tune camera, audio, and interface preferences. Changes apply instantly and stay local to this session.</p>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h4>🎥 Camera Settings</h4>
+                        <div class="setting-item">
+                            <label>Camera Quality:</label>
+                            <select id="cameraQuality">
+                                <option value="low">Low (480p)</option>
+                                <option value="medium" selected>Medium (720p)</option>
+                                <option value="high">High (1080p)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Detection Sensitivity:</label>
+                            <input type="range" id="detectionSensitivity" min="0.1" max="0.9" step="0.1" value="0.3">
+                            <span id="sensitivityValue">0.3</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Frame Rate:</label>
+                            <select id="cameraFps">
+                                <option value="30" selected>30 FPS</option>
+                                <option value="60">60 FPS</option>
+                            </select>
+                        </div>
+                        <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+                            <input type="checkbox" id="mirrorCamera">
+                            <label for="mirrorCamera" style="margin:0">Mirror Camera</label>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h4>🔊 Audio Settings</h4>
+                        <div class="setting-item">
+                            <label>Voice Feedback:</label>
+                            <input type="checkbox" id="voiceEnabled" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>Speech Rate:</label>
+                            <input type="range" id="speechRate" min="0.5" max="1.5" step="0.1" value="0.9">
+                            <span id="speechRateValue">0.9</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Volume:</label>
+                            <input type="range" id="speechVolume" min="0" max="1" step="0.1" value="1">
+                            <span id="speechVolumeValue">1.0</span>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h4>🎨 Interface</h4>
+                        <div class="setting-item">
+                            <label>Theme:</label>
+                            <select id="themeSelect">
+                                <option value="dark" selected>Dark</option>
+                                <option value="light">Light</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Auto-update Analytics:</label>
+                            <input type="checkbox" id="autoSaveHistory" checked>
+                        </div>
+                        <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+                            <input type="checkbox" id="highContrastMode">
+                            <label for="highContrastMode" style="margin:0">High Contrast Mode</label>
+                        </div>
+                        <div class="setting-item" style="display:flex;align-items:center;gap:8px">
+                            <input type="checkbox" id="reduceMotion">
+                            <label for="reduceMotion" style="margin:0">Reduce Motion</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Tab -->
+        <div class="tab-content" id="help-tab">
+            <div class="help-container">
+                <h3 style="margin-bottom: 20px; color: #fb923c;">❓ Help & Guide</h3>
+                <div class="help-grid">
+                    <div class="help-card">
+                        <h4>🚀 Getting Started</h4>
+                        <ol>
+                            <li>Click "Start AI" to begin object detection</li>
+                            <li>Allow camera access when prompted</li>
+                            <li>"What do you see?" - List all detected objects</li>
+                            <li>"How many people?" - Count specific objects</li>
+                            <li>"Is it safe?" - Check for potential hazards</li>
+                            <li>"Where is the nearest object?" - Get proximity info</li>
+                        </ol>
+                    </div>
+                    <div class="help-card">
+                        <h4>🎤 Voice Commands</h4>
+                        <ul>
+                            <li>"What do you see?" - List all detected objects</li>
+                            <li>"How many people?" - Count specific objects</li>
+                            <li>"Is it safe?" - Check for potential hazards</li>
+                            <li>"Where is the nearest object?" - Get proximity info</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h4>📊 Features</h4>
+                        <ul>
+                            <li><strong>Real-time Detection:</strong> Identifies 80+ object types</li>
+                            <li><strong>Distance Estimation:</strong> Calculates object proximity</li>
+                            <li><strong>Voice Q&A:</strong> Ask questions about your environment</li>
+                            <li><strong>Analytics:</strong> Monitor usage statistics</li>
+                            <li><strong>Settings:</strong> Customize camera and audio preferences</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h4>🧰 Troubleshooting</h4>
+                        <ul>
+                            <li>Camera not starting: ensure permission is granted and no other app is using the camera.</li>
+                            <li>Model not loading: check internet connection or ad-block/VPN settings.</li>
+                            <li>No detections: increase sensitivity in Settings or improve lighting.</li>
+                            <li>Audio not speaking: enable Voice Feedback and raise Volume.</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h4>⌨️ Shortcuts</h4>
+                        <ul>
+                            <li><strong>S</strong>: Start AI</li>
+                            <li><strong>X</strong>: Stop AI</li>
+                            <li><strong>L</strong>: Toggle Listen</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h4>🔒 Privacy & Permissions</h4>
+                        <ul>
+                            <li>Video stays on your device; processing runs in the browser.</li>
+                            <li>Analytics are session-only; no history is stored or uploaded.</li>
+                            <li>Microphone access is used only when you click Listen.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+    
+    <script>
+        // Simple loader to inject external HTML into containers
+        async function loadInto(containerId, url) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '<div style="color:#cbd5e1">Loading...</div>';
+            try {
+                const res = await fetch(url, { cache: 'no-store' });
+                const html = await res.text();
+                container.innerHTML = html;
+            } catch (e) {
+                container.innerHTML = '<div style="color:#ef4444">Failed to load content.</div>';
+                console.error('Failed to load', url, e);
+            }
+        }
+        let model, videoStream;
+        let isRunning = false;
+        let isListening = false;
+        let currentDetections = [];
+        let lastSpoken = '';
+        let lastNearestAnnouncement = { label: '', distance: Infinity };
+        let lastAnnouncementTimeMs = 0;
+        // FPS tracking
+        let frameCountSinceLastFps = 0;
+        let lastFpsTimestampMs = 0;
+        
+        // Session tracking
+        let sessionStartTime = null;
+        
+        // Analytics data
+        let totalSessions = 0;
+        let totalObjectsDetected = 0;
+        let sessionTimes = [];
+        let objectCounts = {};
+        
+
+
+        
+        // These element references are resolved when the main page is loaded
+        let video, canvas, ctx, startBtn, stopBtn, listenBtn, systemStatus, modelStatus,
+            detectionList, questionBox, questionText, answerBox, answerText,
+            listeningIndicator, nearestStatus, totalDetections, avgConfidence;
+
+        function resolveMainRefs() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            ctx = canvas ? canvas.getContext('2d') : null;
+            startBtn = document.getElementById('startBtn');
+            stopBtn = document.getElementById('stopBtn');
+            listenBtn = document.getElementById('listenBtn');
+            systemStatus = document.getElementById('systemStatus');
+            modelStatus = document.getElementById('modelStatus');
+            detectionList = document.getElementById('detectionList');
+            questionBox = document.getElementById('questionBox');
+            questionText = document.getElementById('questionText');
+            answerBox = document.getElementById('answerBox');
+            answerText = document.getElementById('answerText');
+            listeningIndicator = document.getElementById('listeningIndicator');
+            nearestStatus = document.getElementById('nearestStatus');
+            totalDetections = document.getElementById('totalDetections');
+            avgConfidence = document.getElementById('avgConfidence');
+        }
+
+        // Camera/model parameters for distance estimation
+        // Assumed horizontal Field-of-View for typical laptop/phone camera (degrees)
+        const CAMERA_HORIZONTAL_FOV_DEG = 65;
+        // Typical real-world object heights (meters) for coarse distance estimation
+        const TYPICAL_OBJECT_HEIGHT_M = {
+            'person': 1.7,
+            'car': 1.5,
+            'truck': 2.6,
+            'bus': 3.0,
+            'motorcycle': 1.2,
+            'bicycle': 1.1,
+            'dog': 0.5,
+            'cat': 0.25,
+            'chair': 1.0,
+            'bench': 0.9,
+            'table': 0.75,
+            'couch': 1.0,
+            'traffic light': 1.2,
+            'stop sign': 0.75,
+            'tv': 0.35,
+            'refrigerator': 1.7,
+            'suitcase': 0.6
+        };
+
+        const TYPICAL_OBJECT_WIDTH_M = {
+            'person': 0.5,
+            'car': 1.8,
+            'truck': 2.5,
+            'bus': 2.6,
+            'motorcycle': 0.8,
+            'bicycle': 0.6,
+            'dog': 0.3,
+            'cat': 0.18,
+            'chair': 0.45,
+            'bench': 1.2,
+            'table': 1.2,
+            'couch': 2.0,
+            'traffic light': 0.4,
+            'stop sign': 0.6,
+            'tv': 0.6,
+            'refrigerator': 0.7,
+            'suitcase': 0.4
+        };
+
+        // Exponential Moving Average smoothing for distances per class
+        const distanceSmoothingState = new Map(); // key: class label, value: smoothed meters
+        const DISTANCE_EMA_ALPHA = 0.3;
+
+        // Enhanced object detection with better accuracy
+        const enhancedObjects = {
+            'person': ['person', 'people', 'human', 'man', 'woman', 'child', 'boy', 'girl'],
+            'car': ['car', 'vehicle', 'automobile', 'sedan', 'suv'],
+            'truck': ['truck', 'lorry', 'pickup'],
+            'bus': ['bus', 'coach', 'minibus'],
+            'motorcycle': ['motorcycle', 'bike', 'motorbike'],
+            'bicycle': ['bicycle', 'bike', 'cycle'],
+            'dog': ['dog', 'puppy', 'canine'],
+            'cat': ['cat', 'kitten', 'feline'],
+            'chair': ['chair', 'seat', 'stool'],
+            'table': ['table', 'desk', 'counter'],
+            'tv': ['tv', 'television', 'monitor', 'screen'],
+            'laptop': ['laptop', 'computer', 'notebook'],
+            'cell phone': ['phone', 'cellphone', 'mobile', 'smartphone'],
+            'book': ['book', 'magazine', 'newspaper'],
+            'cup': ['cup', 'mug', 'glass', 'bottle'],
+            'bowl': ['bowl', 'dish', 'plate'],
+            'backpack': ['backpack', 'bag', 'rucksack'],
+            'umbrella': ['umbrella', 'parasol'],
+            'handbag': ['handbag', 'purse', 'wallet'],
+            'bench': ['bench', 'seat'],
+            'bird': ['bird', 'pigeon', 'sparrow'],
+            'horse': ['horse', 'pony'],
+            'sheep': ['sheep', 'lamb'],
+            'cow': ['cow', 'bull', 'cattle'],
+            'elephant': ['elephant'],
+            'zebra': ['zebra'],
+            'giraffe': ['giraffe'],
+            'bear': ['bear'],
+            'zebra': ['zebra'],
+            'airplane': ['airplane', 'plane', 'aircraft'],
+            'train': ['train', 'locomotive'],
+            'boat': ['boat', 'ship', 'vessel'],
+            'traffic light': ['traffic light', 'signal'],
+            'fire hydrant': ['fire hydrant'],
+            'stop sign': ['stop sign'],
+            'parking meter': ['parking meter'],
+            'bench': ['bench'],
+            'bird': ['bird'],
+            'cat': ['cat'],
+            'dog': ['dog'],
+            'horse': ['horse'],
+            'sheep': ['sheep'],
+            'cow': ['cow'],
+            'elephant': ['elephant'],
+            'bear': ['bear'],
+            'zebra': ['zebra'],
+            'giraffe': ['giraffe'],
+            'backpack': ['backpack'],
+            'umbrella': ['umbrella'],
+            'handbag': ['handbag'],
+            'tie': ['tie'],
+            'suitcase': ['suitcase'],
+            'frisbee': ['frisbee'],
+            'skis': ['skis'],
+            'snowboard': ['snowboard'],
+            'sports ball': ['ball', 'sports ball'],
+            'kite': ['kite'],
+            'baseball bat': ['baseball bat'],
+            'baseball glove': ['baseball glove'],
+            'skateboard': ['skateboard'],
+            'surfboard': ['surfboard'],
+            'tennis racket': ['tennis racket'],
+            'bottle': ['bottle'],
+            'wine glass': ['wine glass'],
+            'cup': ['cup'],
+            'fork': ['fork'],
+            'knife': ['knife'],
+            'spoon': ['spoon'],
+            'bowl': ['bowl'],
+            'banana': ['banana'],
+            'apple': ['apple'],
+            'sandwich': ['sandwich'],
+            'orange': ['orange'],
+            'broccoli': ['broccoli'],
+            'carrot': ['carrot'],
+            'hot dog': ['hot dog'],
+            'pizza': ['pizza'],
+            'donut': ['donut'],
+            'cake': ['cake'],
+            'chair': ['chair'],
+            'couch': ['couch', 'sofa'],
+            'potted plant': ['plant', 'potted plant'],
+            'bed': ['bed'],
+            'dining table': ['table', 'dining table'],
+            'toilet': ['toilet'],
+            'tv': ['tv'],
+            'laptop': ['laptop'],
+            'mouse': ['mouse'],
+            'remote': ['remote'],
+            'keyboard': ['keyboard'],
+            'cell phone': ['phone', 'cell phone'],
+            'microwave': ['microwave'],
+            'oven': ['oven'],
+            'toaster': ['toaster'],
+            'sink': ['sink'],
+            'refrigerator': ['refrigerator', 'fridge'],
+            'book': ['book'],
+            'clock': ['clock'],
+            'vase': ['vase'],
+            'scissors': ['scissors'],
+            'teddy bear': ['teddy bear'],
+            'hair drier': ['hair drier'],
+            'toothbrush': ['toothbrush']
+        };
+
+        // Speech Recognition Setup
+        let recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            
+            recognition.onstart = () => {
+                isListening = true;
+                listenBtn.textContent = '🎤 Listening...';
+                listenBtn.classList.add('listening');
+                listeningIndicator.style.display = 'inline-block';
+                systemStatus.textContent = 'Listening for questions...';
+            };
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                questionText.textContent = transcript;
+                questionBox.style.display = 'block';
+                
+                const answer = analyzeQuestionAndAnswer(transcript);
+                answerText.textContent = answer;
+                answerBox.style.display = 'block';
+                
+                speak(answer);
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                systemStatus.textContent = 'Speech recognition error. Click "Listen" again.';
+            };
+            
+            recognition.onend = () => {
+                if (isListening) {
+                    setTimeout(() => {
+                        if (isListening) recognition.start();
+                    }, 100);
+                } else {
+                    listenBtn.textContent = '🎤 Listen';
+                    listenBtn.classList.remove('listening');
+                    listeningIndicator.style.display = 'none';
+                }
+            };
+        } else {
+            listenBtn.disabled = true;
+            systemStatus.textContent = 'Speech recognition not supported.';
+        }
+
+        async function ensureTFBackend() {
+            try {
+                await tf.ready();
+                const okWebgl = await tf.setBackend('webgl').then(() => tf.getBackend() === 'webgl').catch(() => false);
+                if (!okWebgl) {
+                    await tf.setBackend('cpu');
+                }
+                await tf.ready();
+            } catch (e) {
+                console.warn('TFJS backend setup warning:', e);
+            }
+        }
+
+        async function loadModel() {
+            try {
+                systemStatus.textContent = 'Loading AI model...';
+                if (modelStatus) modelStatus.textContent = 'Initializing...';
+                await ensureTFBackend();
+
+                const loadAttempts = [
+                    () => cocoSsd.load({ base: 'lite_mobilenet_v2' }),
+                    () => cocoSsd.load({ base: 'mobilenet_v2' }),
+                    () => cocoSsd.load(),
+                ];
+
+                let lastErr;
+                for (const attempt of loadAttempts) {
+                    try {
+                        model = await attempt();
+                        if (modelStatus) modelStatus.textContent = 'COCO-SSD ✓ Ready';
+                        systemStatus.textContent = 'AI model loaded successfully! Ready for detection.';
+                        const modelNameLabel = document.getElementById('modelNameLabel');
+                        if (modelNameLabel) modelNameLabel.textContent = 'COCO-SSD';
+                        return true;
+                    } catch (e) {
+                        lastErr = e;
+                        console.warn('Model load attempt failed:', e);
+                    }
+                }
+                throw lastErr || new Error('All loading methods failed');
+            } catch (error) {
+                console.error('Model loading error:', error);
+                systemStatus.textContent = 'Failed to load model. Check internet/ad-block/VPN and retry.';
+                if (modelStatus) modelStatus.textContent = 'Error: Model not available';
+                return false;
+            }
+        }
+
+        async function detectObjects() {
+            if (!isRunning) return;
+
+            try {
+                if (!canvas || !ctx || !video) return;
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Get sensitivity from settings
+                const sensitivity = parseFloat(document.getElementById('detectionSensitivity').value);
+                
+                // Enhanced detection with configurable threshold
+                const predictions = await model.detect(canvas);
+                
+                // Filter with enhanced logic
+                currentDetections = predictions.filter(pred => {
+                    // Use configurable threshold
+                    if (pred.score > sensitivity) return true;
+                    
+                    // Special handling for important objects
+                    if (['person', 'car', 'truck', 'bus', 'motorcycle', 'bicycle'].includes(pred.class)) {
+                        return pred.score > (sensitivity * 0.7);
+                    }
+                    
+                    return false;
+                });
+                
+                // Update analytics data
+                currentDetections.forEach(det => {
+                    objectCounts[det.class] = (objectCounts[det.class] || 0) + 1;
+                    totalObjectsDetected++;
+                });
+                
+                updateDetectionDisplay();
+                drawDetections();
+                updateNearestObject();
+                updateStats();
+                // FPS update
+                try {
+                    frameCountSinceLastFps++;
+                    const now = performance.now();
+                    if (!lastFpsTimestampMs) lastFpsTimestampMs = now;
+                    const elapsed = now - lastFpsTimestampMs;
+                    if (elapsed >= 500) {
+                        const fps = Math.round((frameCountSinceLastFps / (elapsed / 1000)));
+                        const liveFpsEl = document.getElementById('liveFps');
+                        if (liveFpsEl) liveFpsEl.textContent = String(fps);
+                        frameCountSinceLastFps = 0;
+                        lastFpsTimestampMs = now;
+                    }
+                } catch {}
+                
+            } catch (error) {
+                console.error('Detection error:', error);
+            }
+            
+            requestAnimationFrame(detectObjects);
+        }
+
+        function updateDetectionDisplay() {
+            if (!detectionList) return;
+            if (currentDetections.length === 0) {
+                detectionList.innerHTML = '<div style="color: #b0c4de; text-align: center;">No objects detected</div>';
+                totalDetections.textContent = '0';
+                avgConfidence.textContent = '0%';
+                return;
+            }
+            
+            const objectCounts = {};
+            currentDetections.forEach(det => {
+                objectCounts[det.class] = (objectCounts[det.class] || 0) + 1;
+            });
+            
+            detectionList.innerHTML = Object.entries(objectCounts).map(([className, count]) => `
+                <div class="detection-item">
+                    <div>
+                        <strong>${className}</strong>
+                        <div style="font-size: 0.8rem; color: #b0c4de;">${count} detected</div>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${Math.round(currentDetections.find(d => d.class === className).score * 100)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+            totalDetections.textContent = currentDetections.length;
+
+            const totalConfidence = currentDetections.reduce((sum, det) => sum + det.score, 0);
+            avgConfidence.textContent = `${Math.round(totalConfidence / currentDetections.length * 100)}%`;
+        }
+
+        function drawDetections() {
+            if (!canvas || !ctx || !video) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            currentDetections.forEach(det => {
+                const [x, y, w, h] = det.bbox;
+                const confidence = Math.round(det.score * 100);
+                const distance = getSmoothedDistance(det.class, estimateDistanceMeters(det, canvas.width, canvas.height));
+                
+                // Enhanced visual feedback
+                ctx.strokeStyle = confidence > 70 ? '#fb923c' : confidence > 50 ? '#f59e0b' : '#ef4444';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, w, h);
+                
+                // Enhanced label
+                const distanceLabel = distance ? ` ~ ${formatDistance(distance)}` : '';
+                const label = `${det.class} ${confidence}%${distanceLabel}`;
+                const labelWidth = ctx.measureText(label).width + 10;
+                ctx.fillStyle = 'rgba(0,0,0,0.8)';
+                ctx.fillRect(x, y - 25, labelWidth, 25);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px Arial';
+                ctx.fillText(label, x + 5, y - 8);
+            });
+        }
+
+        function estimateDistanceMeters(det, frameWidth, frameHeight) {
+            // Use vertical dimension of the bounding box and vertical FOV
+            const objectLabel = det.class.toLowerCase();
+            const realHeightM = TYPICAL_OBJECT_HEIGHT_M[objectLabel];
+            const realWidthM = TYPICAL_OBJECT_WIDTH_M[objectLabel];
+
+            // Convert horizontal FOV to vertical FOV based on aspect ratio
+            const hFovRad = (CAMERA_HORIZONTAL_FOV_DEG * Math.PI) / 180;
+            const aspect = frameWidth / Math.max(1, frameHeight);
+            const vFovRad = 2 * Math.atan(Math.tan(hFovRad / 2) / aspect);
+
+            // Focal length in pixels for vertical and horizontal axes
+            const focalVyPx = (frameHeight / 2) / Math.tan(vFovRad / 2);
+            const focalHxPx = (frameWidth / 2) / Math.tan(hFovRad / 2);
+
+            let estimates = [];
+            const bboxHeightPx = det.bbox[3];
+            const bboxWidthPx = det.bbox[2];
+
+            if (realHeightM && bboxHeightPx && bboxHeightPx > 1) {
+                const zFromHeight = (realHeightM * focalVyPx) / bboxHeightPx;
+                estimates.push(zFromHeight);
+            }
+
+            if (realWidthM && bboxWidthPx && bboxWidthPx > 1) {
+                const zFromWidth = (realWidthM * focalHxPx) / bboxWidthPx;
+                estimates.push(zFromWidth);
+            }
+
+            if (estimates.length === 0) return null;
+
+            // Combine estimates using harmonic mean to reduce impact of outliers
+            const invSum = estimates.reduce((acc, v) => acc + (1 / Math.max(1e-6, v)), 0);
+            const distanceM = estimates.length / invSum;
+
+            // Clamp to reasonable range
+            return Math.min(Math.max(distanceM, 0.2), 25);
+        }
+
+        function getSmoothedDistance(label, rawDistance) {
+            if (rawDistance == null || !isFinite(rawDistance)) return null;
+            const key = label.toLowerCase();
+            const prev = distanceSmoothingState.get(key);
+            const next = prev == null ? rawDistance : (DISTANCE_EMA_ALPHA * rawDistance + (1 - DISTANCE_EMA_ALPHA) * prev);
+            distanceSmoothingState.set(key, next);
+            return next;
+        }
+
+        function updateNearestObject() {
+            if (!nearestStatus) return;
+            if (!currentDetections || currentDetections.length === 0) {
+                nearestStatus.textContent = 'No objects detected';
+                return;
+            }
+
+            let nearest = null;
+            let nearestDistance = Infinity;
+            for (const det of currentDetections) {
+                const d = getSmoothedDistance(det.class, estimateDistanceMeters(det, canvas.width, canvas.height));
+                if (d !== null && d < nearestDistance) {
+                    nearestDistance = d;
+                    nearest = det;
+                }
+            }
+
+            if (!nearest) {
+                // Fallback: use largest bbox height if no known-sized objects
+                let fallback = null;
+                let maxHeight = 0;
+                for (const det of currentDetections) {
+                    const h = det.bbox[3];
+                    if (h > maxHeight) { maxHeight = h; fallback = det; }
+                }
+                if (fallback) {
+                    nearestStatus.textContent = `Closest (relative): ${fallback.class}`;
+                    maybeAnnounceNearest(`${fallback.class}`, null);
+                } else {
+                    nearestStatus.textContent = 'No objects detected';
+                }
+                return;
+            }
+
+            const label = `${nearest.class}`;
+            const distanceLabel = formatDistance(nearestDistance);
+            nearestStatus.textContent = `${label} at ${distanceLabel}`;
+            maybeAnnounceNearest(label, nearestDistance);
+        }
+
+        function maybeAnnounceNearest(label, distanceM) {
+            if (isListening) return; // Do not announce distances while microphone is in use
+            const now = performance.now();
+            const changedLabel = label !== lastNearestAnnouncement.label;
+            const changedDistance = Math.abs((distanceM ?? lastNearestAnnouncement.distance) - lastNearestAnnouncement.distance) > 0.3;
+            const timeElapsed = now - lastAnnouncementTimeMs > 4000;
+
+            if (changedLabel || changedDistance || timeElapsed) {
+                const spoken = distanceM ? `${label} at ${formatDistance(distanceM)}` : `${label} is the closest`;
+                speak(spoken);
+                lastNearestAnnouncement = { label, distance: distanceM ?? lastNearestAnnouncement.distance };
+                lastAnnouncementTimeMs = now;
+            }
+        }
+
+        function formatDistance(dMeters) {
+            if (!Number.isFinite(dMeters)) return '';
+            if (dMeters < 1) {
+                const cm = Math.round(dMeters * 100);
+                return `${cm} cm`;
+            }
+            const rounded = Math.round(dMeters * 10) / 10;
+            return `${rounded} m`;
+        }
+
+        function analyzeQuestionAndAnswer(question) {
+            if (currentDetections.length === 0) {
+                return "I don't see any objects in the current view. The area appears to be clear.";
+            }
+
+            const objects = currentDetections.map(obj => obj.class.toLowerCase());
+            const uniqueObjects = [...new Set(objects)];
+            const objectCounts = {};
+            objects.forEach(obj => objectCounts[obj] = (objectCounts[obj] || 0) + 1);
+            
+            // Enhanced question analysis
+            if (question.includes('what') && question.includes('see')) {
+                const descriptions = uniqueObjects.map(obj => {
+                    const count = objectCounts[obj];
+                    return count > 1 ? `${count} ${obj}s` : obj;
+                });
+                return `I can see ${descriptions.join(', ')} in the current view.`;
+            }
+            
+            if (question.includes('how many')) {
+                const targetObject = findTargetObject(question, uniqueObjects);
+                if (targetObject) {
+                    const count = objectCounts[targetObject];
+                    return `I can see ${count} ${targetObject}${count > 1 ? 's' : ''}.`;
+                } else {
+                    const descriptions = Object.entries(objectCounts).map(([obj, num]) => 
+                        `${num} ${obj}${num > 1 ? 's' : ''}`
+                    );
+                    return `I can see ${descriptions.join(', ')}.`;
+                }
+            }
+            
+            if (question.includes('where')) {
+                const targetObject = findTargetObject(question, uniqueObjects);
+                if (targetObject) {
+                    const detections = currentDetections.filter(d => d.class.toLowerCase() === targetObject);
+                    const positions = detections.map(obj => {
+                        const centerX = obj.bbox[0] + obj.bbox[2] / 2;
+                        const centerY = obj.bbox[1] + obj.bbox[3] / 2;
+                        return describePosition(centerX, centerY, canvas.width, canvas.height, obj.class);
+                    });
+                    return positions.join('. ') + '.';
+                }
+            }
+            
+            if (question.includes('danger') || question.includes('safe')) {
+                const dangerousObjects = objects.filter(obj => 
+                    ['person', 'car', 'truck', 'motorcycle', 'bicycle', 'bus', 'dog'].includes(obj)
+                );
+                if (dangerousObjects.length > 0) {
+                    return `⚠️ Caution! I see ${dangerousObjects.join(', ')} ahead. Please be careful.`;
+                } else {
+                    return "✅ The area appears to be safe. I don't see any immediate hazards.";
+                }
+            }
+            
+            if (question.includes('clear') || question.includes('obstacle')) {
+                const obstacles = objects.filter(obj => 
+                    ['person', 'car', 'truck', 'motorcycle', 'bicycle', 'bus', 'chair', 'bench', 'table'].includes(obj)
+                );
+                if (obstacles.length > 0) {
+                    return `🚫 The path is not clear. I can see ${obstacles.join(', ')} that might be obstacles.`;
+                } else {
+                    return "✅ The path appears to be clear of major obstacles.";
+                }
+            }
+            
+            // Default intelligent response
+            const descriptions = uniqueObjects.map(obj => {
+                const count = objectCounts[obj];
+                return count > 1 ? `${count} ${obj}s` : obj;
+            });
+            return `I can see ${descriptions.join(', ')} in the current view. What specific information would you like to know about them?`;
+        }
+
+        function findTargetObject(question, availableObjects) {
+            for (const obj of availableObjects) {
+                if (question.includes(obj)) return obj;
+            }
+            return null;
+        }
+
+        function describePosition(x, y, width, height, objectName) {
+            let position = '';
+            
+            if (x < width / 3) position += 'left ';
+            else if (x > 2 * width / 3) position += 'right ';
+            else position += 'center ';
+            
+            if (y < height / 3) position += 'top';
+            else if (y > 2 * height / 3) position += 'bottom';
+            else position += 'middle';
+            
+            return `${objectName} is in the ${position}`;
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window && text !== lastSpoken && document.getElementById('voiceEnabled').checked) {
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.rate = parseFloat(document.getElementById('speechRate').value);
+                const volEl = document.getElementById('speechVolume');
+                if (volEl) utter.volume = parseFloat(volEl.value);
+                utter.pitch = 1.0;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utter);
+                lastSpoken = text;
+            }
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'environment'
+                    } 
+                });
+                video.srcObject = stream;
+                systemStatus.textContent = 'Camera started. Loading AI model...';
+            } catch (err) {
+                systemStatus.textContent = 'Camera access denied or not available.';
+                console.error('Camera error:', err);
+            }
+        }
+
+        function updateStats() {
+            totalDetections.textContent = currentDetections.length;
+            if (currentDetections.length > 0) {
+                const avgConf = Math.round(currentDetections.reduce((sum, det) => sum + det.score, 0) / currentDetections.length * 100);
+                avgConfidence.textContent = avgConf + '%';
+            } else {
+                avgConfidence.textContent = '0%';
+            }
+        }
+
+        // Event handlers (wired dynamically after main content loads)
+        function wireMainButtons() {
+            startBtn = document.getElementById('startBtn');
+            stopBtn = document.getElementById('stopBtn');
+            listenBtn = document.getElementById('listenBtn');
+            if (!startBtn || !stopBtn || !listenBtn) return;
+
+            startBtn.onclick = async () => {
+                if (!model) {
+                    const modelLoaded = await loadModel();
+                    if (!modelLoaded) return;
+                }
+                isRunning = true;
+                sessionStartTime = Date.now();
+                totalSessions++;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                listenBtn.disabled = false;
+                detectObjects();
+                if (systemStatus) systemStatus.textContent = 'AI is running. Click "Listen" to ask questions.';
+                const statusEl = document.getElementById('statusLabel');
+                if (statusEl) statusEl.textContent = 'Running';
+                frameCountSinceLastFps = 0;
+                lastFpsTimestampMs = performance.now();
+            };
+
+            stopBtn.onclick = () => {
+                isRunning = false;
+                isListening = false;
+                if (sessionStartTime) {
+                    const sessionDuration = Date.now() - sessionStartTime;
+                    sessionTimes.push({ start: sessionStartTime, duration: sessionDuration });
+                    sessionStartTime = null;
+                }
+                if (recognition) recognition.stop();
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                listenBtn.disabled = true;
+                listenBtn.textContent = '🎤 Listen';
+                listenBtn.classList.remove('listening');
+                if (listeningIndicator) listeningIndicator.style.display = 'none';
+                if (questionBox) questionBox.style.display = 'none';
+                if (answerBox) answerBox.style.display = 'none';
+                if (systemStatus) systemStatus.textContent = 'AI stopped.';
+                window.speechSynthesis.cancel();
+                const statusEl = document.getElementById('statusLabel');
+                if (statusEl) statusEl.textContent = 'Idle';
+                const liveFpsEl = document.getElementById('liveFps');
+                if (liveFpsEl) liveFpsEl.textContent = '0';
+            };
+
+            listenBtn.onclick = () => {
+                if (!isListening && recognition) {
+                    isListening = true;
+                    recognition.start();
+                } else if (isListening) {
+                    isListening = false;
+                    recognition.stop();
+                }
+            };
+        }
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                // Remove active class from all tabs and buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab and button
+                btn.classList.add('active');
+                const tabElement = document.getElementById(tabName + '-tab');
+                if (tabElement) {
+                    tabElement.classList.add('active');
+                    if (tabName === 'main') {
+                        loadInto('main-content', 'pages/main.html').then(() => {
+                            resolveMainRefs();
+                            wireMainButtons();
+                            startCamera();
+                        });
+                    } else if (tabName === 'analytics') {
+                        loadInto('analytics-container', 'pages/analytics.html').then(() => updateAnalytics());
+                    } else if (tabName === 'settings') {
+                        loadInto('settings-container', 'pages/settings.html').then(() => wireSettings());
+                    } else if (tabName === 'help') {
+                        loadInto('help-container', 'pages/help.html');
+                    }
+                }
+            });
+        });
+
+        // Analytics functions
+        function updateAnalytics() {
+            document.getElementById('totalSessions').textContent = totalSessions;
+            document.getElementById('totalObjects').textContent = totalObjectsDetected;
+            
+            // Calculate average confidence from current session data
+            const avgConf = currentDetections.length > 0 
+                ? Math.round(currentDetections.reduce((sum, obj) => sum + obj.score, 0) / currentDetections.length * 100)
+                : 0;
+            document.getElementById('avgConfidenceOverall').textContent = avgConf + '%';
+            
+            // Most detected objects
+            const mostDetected = Object.entries(objectCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5);
+            
+            const mostDetectedList = document.getElementById('mostDetectedList');
+            if (mostDetected.length === 0) {
+                mostDetectedList.innerHTML = '<div style="color: #b0c4de; text-align: center;">No data</div>';
+            } else {
+                mostDetectedList.innerHTML = mostDetected.map(([obj, count]) => `
+                    <div class="stat-item">
+                        <span>${obj}</span>
+                        <span>${count}</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Session times
+            const today = new Date().toDateString();
+            const todaySessions = sessionTimes.filter(s => new Date(s.start).toDateString() === today);
+            const todayMinutes = Math.round(todaySessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60000);
+            document.getElementById('todayTime').textContent = todayMinutes + ' min';
+            
+            const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+            const weekSessions = sessionTimes.filter(s => new Date(s.start) > weekAgo);
+            const weekMinutes = Math.round(weekSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / 60000);
+            document.getElementById('weekTime').textContent = weekMinutes + ' min';
+        }
+
+        // Settings event listeners (wired after settings page loads)
+        function wireSettings() {
+            const detSens = document.getElementById('detectionSensitivity');
+            if (detSens) detSens.addEventListener('input', (e) => {
+                const el = document.getElementById('sensitivityValue');
+                if (el) el.textContent = e.target.value;
+            });
+
+            const speechRate = document.getElementById('speechRate');
+            if (speechRate) speechRate.addEventListener('input', (e) => {
+                const el = document.getElementById('speechRateValue');
+                if (el) el.textContent = e.target.value;
+            });
+
+            const speechVolume = document.getElementById('speechVolume');
+            if (speechVolume) speechVolume.addEventListener('input', (e) => {
+                const el = document.getElementById('speechVolumeValue');
+                if (el) el.textContent = Number(e.target.value).toFixed(1);
+            });
+
+            const cameraQuality = document.getElementById('cameraQuality');
+            if (cameraQuality) cameraQuality.addEventListener('change', (e) => {
+                console.log('Camera quality changed to:', e.target.value);
+            });
+
+            const themeSelect = document.getElementById('themeSelect');
+            if (themeSelect) themeSelect.addEventListener('change', (e) => {
+                console.log('Theme changed to:', e.target.value);
+            });
+
+            const voiceEnabled = document.getElementById('voiceEnabled');
+            if (voiceEnabled) voiceEnabled.addEventListener('change', (e) => {
+                console.log('Voice feedback:', e.target.checked ? 'enabled' : 'disabled');
+            });
+
+            const autoSave = document.getElementById('autoSaveHistory');
+            if (autoSave) autoSave.addEventListener('change', (e) => {
+                console.log('Auto save:', e.target.checked ? 'enabled' : 'disabled');
+            });
+
+            const highContrastMode = document.getElementById('highContrastMode');
+            if (highContrastMode) highContrastMode.addEventListener('change', (e) => {
+                document.body.classList.toggle('high-contrast', e.target.checked);
+            });
+
+            const reduceMotion = document.getElementById('reduceMotion');
+            if (reduceMotion) reduceMotion.addEventListener('change', (e) => {
+                document.body.classList.toggle('reduce-motion', e.target.checked);
+            });
+
+            const videoContainer = document.querySelector('.video-container');
+            const mirror = document.getElementById('mirrorCamera');
+            if (mirror) mirror.addEventListener('change', (e) => {
+                if (videoContainer) {
+                    videoContainer.classList.toggle('mirrored', e.target.checked);
+                }
+            });
+            const cameraFps = document.getElementById('cameraFps');
+            if (cameraFps) cameraFps.addEventListener('change', (e) => {
+                console.log('Requested camera FPS:', e.target.value);
+            });
+        }
+
+        // Initial load main tab content
+        loadInto('main-content', 'pages/main.html').then(() => {
+            resolveMainRefs();
+            wireMainButtons();
+            startCamera();
+        });
+    </script>
+</body>
+</html> 
