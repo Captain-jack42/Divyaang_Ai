@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: emoji-voice-generator
+    env: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DISABLE_SERVER_TTS
+        value: '1'

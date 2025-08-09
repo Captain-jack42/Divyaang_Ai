@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Voice Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 Emoji Voice Generator</h1>
+            <p>Transform your text into speech with emoji-powered emotions!</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="text-input-group">
+                    <label for="textInput">Enter your text:</label>
+                    <textarea id="textInput" placeholder="Type something amazing here..."></textarea>
+                </div>
+
+                <div class="emoji-selector">
+                    <label>Choose an emotion:</label>
+                    <div class="emoji-grid">
+                        <button class="emoji-btn" data-emoji="😊" data-emotion="happy">
+                            <span class="emoji">😊</span>
+                            <span class="label">Happy</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="😢" data-emotion="sad">
+                            <span class="emoji">😢</span>
+                            <span class="label">Sad</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="😱" data-emotion="shock">
+                            <span class="emoji">😱</span>
+                            <span class="label">Shock</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="😠" data-emotion="angry">
+                            <span class="emoji">😠</span>
+                            <span class="label">Angry</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="😴" data-emotion="sleepy">
+                            <span class="emoji">😴</span>
+                            <span class="label">Sleepy</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="🤖" data-emotion="robotic">
+                            <span class="emoji">🤖</span>
+                            <span class="label">Robotic</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="🎭" data-emotion="dramatic">
+                            <span class="emoji">🎭</span>
+                            <span class="label">Dramatic</span>
+                        </button>
+                        <button class="emoji-btn" data-emoji="🎵" data-emotion="singing">
+                            <span class="emoji">🎵</span>
+                            <span class="label">Singing</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="generate-btn">
+                    <span class="btn-icon">🎵</span>
+                    Generate Voice
+                </button>
+            </div>
+
+            <div class="output-section" id="outputSection" style="display: none;">
+                <h3>Your Emoji Voice</h3>
+                <div class="audio-player">
+                    <audio id="audioPlayer" controls></audio>
+                    <div class="audio-controls">
+                        <button id="downloadBtn" class="control-btn">
+                            <span class="btn-icon">⬇️</span>
+                            Download
+                        </button>
+                        <button id="shareBtn" class="control-btn">
+                            <span class="btn-icon">📤</span>
+                            Share
+                        </button>
+                    </div>
+                </div>
+                <div class="voice-info">
+                    <p>Generated with <span id="selectedEmoji">😊</span> emotion</p>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating your emoji voice...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

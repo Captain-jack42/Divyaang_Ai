@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Emotion Studio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎤 Voice Studio</h2>
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Connecting...</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-section="generator">
+                    <span class="nav-icon">🎵</span>
+                    Voice Generator
+                </button>
+                <button class="nav-btn" data-section="analytics">
+                    <span class="nav-icon">📊</span>
+                    Voice Analytics
+                </button>
+                <button class="nav-btn" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Voice Generator Section -->
+            <section id="generator" class="content-section active">
+                <div class="section-header">
+                    <h1>Voice Emotion Studio</h1>
+                    <p>Transform text into expressive speech with perfect emotional alignment</p>
+                </div>
+
+                <div class="generator-grid">
+                    <!-- Input Panel -->
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <h3>Text Input</h3>
+                            <div class="char-counter">
+                                <span id="charCount">0</span>/500
+                            </div>
+                        </div>
+                        
+                        <div class="text-input-container">
+                            <textarea 
+                                id="textInput" 
+                                placeholder="Enter your text here... (max 500 characters)"
+                                maxlength="500"
+                            ></textarea>
+                        </div>
+
+                        <div class="emotion-intensity">
+                            <label>Emotion Intensity</label>
+                            <div class="intensity-slider">
+                                <input type="range" id="intensitySlider" min="1" max="5" value="3">
+                                <div class="intensity-labels">
+                                    <span>Subtle</span>
+                                    <span>Moderate</span>
+                                    <span>Intense</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emotion Selector -->
+                    <div class="emotion-panel">
+                        <div class="panel-header">
+                            <h3>Choose Emotion</h3>
+                            <span class="selected-emotion" id="selectedEmotion">😊 Happy</span>
+                        </div>
+                        
+                        <div class="emotion-grid">
+                            <button class="emotion-btn selected" data-emoji="😊" data-emotion="happy">
+                                <span class="emotion-emoji">😊</span>
+                                <span class="emotion-name">Happy</span>
+                                <span class="emotion-desc">Cheerful & upbeat</span>
+                            </button>
+                            <button class="emotion-btn" data-emoji="😢" data-emotion="sad">
+                                <span class="emotion-emoji">😢</span>
+                                <span class="emotion-name">Sad</span>
+                                <span class="emotion-desc">Melancholic & soft</span>
+                            </button>
+                            <button class="emotion-btn" data-emoji="😱" data-emotion="shock">
+                                <span class="emotion-emoji">😱</span>
+                                <span class="emotion-name">Shock</span>
+                                <span class="emotion-desc">Surprised & excited</span>
+                            </button>
+                            <button class="emotion-btn" data-emoji="😠" data-emotion="angry">
+                                <span class="emotion-emoji">😠</span>
+                                <span class="emotion-name">Angry</span>
+                                <span class="emotion-desc">Forceful & intense</span>
+                            </button>
+                            <button class="emotion-btn" data-emoji="😴" data-emotion="sleepy">
+                                <span class="emotion-emoji">😴</span>
+                                <span class="emotion-name">Sleepy</span>
+                                <span class="emotion-desc">Relaxed & calm</span>
+                            </button>
+                            <button class="emotion-btn" data-emoji="🤔" data-emotion="thoughtful">
+                                <span class="emotion-emoji">🤔</span>
+                                <span class="emotion-name">Thoughtful</span>
+                                <span class="emotion-desc">Contemplative & wise</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="action-panel">
+                    <button id="generateBtn" class="generate-btn" disabled>
+                        <span class="btn-icon"></span>
+                        <span class="btn-text">Generate Voice</span>
+                        <span class="btn-loading" style="display: none;">Processing...</span>
+                    </button>
+                </div>
+
+                <!-- Output Section -->
+                <div class="output-panel" id="outputPanel" style="display: none;">
+                    <div class="panel-header">
+                        <h3>Generated Voice</h3>
+                        <button class="close-btn" id="closeOutput">×</button>
+                    </div>
+                    
+                    <div class="voice-preview">
+                        <div class="voice-info">
+                            <div class="voice-meta">
+                                <span class="emotion-badge" id="outputEmotion">😊 Happy</span>
+                                <span class="intensity-badge" id="outputIntensity">Moderate</span>
+                            </div>
+                            <div class="voice-text">
+                                <h4>Original Text:</h4>
+                                <p id="originalText"></p>
+                                <h4>Modified Text:</h4>
+                                <p id="modifiedText"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="voice-controls">
+                            <button class="control-btn" id="playAgainBtn">
+                                <span class="control-icon">🔊</span>
+                                Play Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Voice Analytics Section -->
+            <section id="analytics" class="content-section">
+                <div class="section-header">
+                    <h1>Voice Analytics</h1>
+                    <p>Track your voice generation usage and insights</p>
+                </div>
+                
+                <div class="analytics-container">
+                    <div class="analytics-grid">
+                        <!-- Usage Stats -->
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>📈 Usage Statistics</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalVoices">0</div>
+                                    <div class="stat-label">Total Voices</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="todayVoices">0</div>
+                                    <div class="stat-label">Today</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalCharacters">0</div>
+                                    <div class="stat-label">Characters</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="avgLength">0</div>
+                                    <div class="stat-label">Avg Length</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emotion Distribution -->
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>🎭 Emotion Distribution</h3>
+                            </div>
+                            <div class="emotion-stats" id="emotionStats">
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">😊</span>
+                                    <span class="emotion-name">Happy</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">😢</span>
+                                    <span class="emotion-name">Sad</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">😱</span>
+                                    <span class="emotion-name">Shock</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">😠</span>
+                                    <span class="emotion-name">Angry</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">😴</span>
+                                    <span class="emotion-name">Sleepy</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                                <div class="emotion-stat">
+                                    <span class="emotion-icon">🤔</span>
+                                    <span class="emotion-name">Thoughtful</span>
+                                    <div class="emotion-bar">
+                                        <div class="emotion-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="emotion-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Intensity Trends -->
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>⚡ Intensity Trends</h3>
+                            </div>
+                            <div class="intensity-stats" id="intensityStats">
+                                <div class="intensity-stat">
+                                    <span class="intensity-label">Subtle</span>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="intensity-count">0</span>
+                                </div>
+                                <div class="intensity-stat">
+                                    <span class="intensity-label">Light</span>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="intensity-count">0</span>
+                                </div>
+                                <div class="intensity-stat">
+                                    <span class="intensity-label">Moderate</span>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="intensity-count">0</span>
+                                </div>
+                                <div class="intensity-stat">
+                                    <span class="intensity-label">Strong</span>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="intensity-count">0</span>
+                                </div>
+                                <div class="intensity-stat">
+                                    <span class="intensity-label">Intense</span>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="intensity-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="analytics-card">
+                            <div class="card-header">
+                                <h3>🕒 Recent Activity</h3>
+                            </div>
+                            <div class="recent-activity" id="recentActivity">
+                                <div class="activity-empty">
+                                    <p>No recent activity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <h1>Settings</h1>
+                    <p>Customize your voice generation experience</p>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h3>Voice Preferences</h3>
+                        <div class="setting-item">
+                            <label>Default Voice</label>
+                            <select id="defaultVoice">
+                                <option value="Microsoft David Desktop">David (Male)</option>
+                                <option value="Microsoft Zira Desktop">Zira (Female)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Track analytics</label>
+                            <input type="checkbox" id="trackAnalytics" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-card">
+                        <h3>Interface</h3>
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="themeSelect">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Show notifications</label>
+                            <input type="checkbox" id="showNotifications" checked>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
